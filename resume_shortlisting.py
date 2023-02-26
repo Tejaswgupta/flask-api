@@ -10,8 +10,6 @@ Original file is located at
 
 import io
 import os
-import subprocess
-import sys
 from io import StringIO
 
 import nltk
@@ -28,10 +26,6 @@ from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
-subprocess.check_call([sys.executable, "-m", "spacy",
-                      "download", "en_core_web_sm"])
-
 
 nltk.download('stopwords')
 nltk.download('popular')
@@ -178,11 +172,9 @@ def calculate_scores(resumes, job_description):
 
 
 def main(dir_location: str, job_description: str):
-
     # Call the gather_pdfs function and pass the directory path as an argument
     df = gather(dir_location)
     # NLTK stop words
-
     stop_words = set(stopwords.words("english"))
 
     # WordNetLemmatizer and PorterStemmer objects

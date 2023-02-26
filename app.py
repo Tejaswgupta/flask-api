@@ -33,7 +33,7 @@ def process_resumes_api():
             resume.save(resume_path)
 
     # Process the resumes
-    shortlisted_resumes = main('resumes_folder', 'job_description')
+    shortlisted_resumes = main('resumes', 'job_description')
 
     # Return the shortlisted resumes
     return jsonify({'shortlisted_resumes': shortlisted_resumes})
