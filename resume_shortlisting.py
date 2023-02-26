@@ -10,6 +10,8 @@ Original file is located at
 
 import io
 import os
+import subprocess
+import sys
 from io import StringIO
 
 import nltk
@@ -26,6 +28,10 @@ from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+subprocess.check_call([sys.executable, "-m", "spacy",
+                      "download", "en_core_web_sm"])
+
 
 nltk.download('stopwords')
 nltk.download('popular')
