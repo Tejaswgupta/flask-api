@@ -9,6 +9,7 @@ Original file is located at
 
 
 import io
+import json
 import os
 from io import StringIO
 
@@ -30,6 +31,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 nltk.download('stopwords')
 nltk.download('popular')
 nlp = spacy.load('en_core_web_sm')
+# NLTK stop words
+stop_words = set(stopwords.words("english"))
+# WordNetLemmatizer and PorterStemmer objects
+wnl = WordNetLemmatizer()
+stemmer = PorterStemmer()
 
 
 def get_pdf_text(pdf_file):
@@ -174,12 +180,6 @@ def calculate_scores(resumes, job_description):
 def main(dir_location: str, job_description: str):
     # Call the gather_pdfs function and pass the directory path as an argument
     df = gather(dir_location)
-    # NLTK stop words
-    stop_words = set(stopwords.words("english"))
-
-    # WordNetLemmatizer and PorterStemmer objects
-    wnl = WordNetLemmatizer()
-    stemmer = PorterStemmer()
 
     # Extract links, emails and phone numbers from resume before cleaning
     df['urls'] = df['text'].apply(
@@ -207,4 +207,31 @@ def main(dir_location: str, job_description: str):
     df = df.sort_values(by='scores', ascending=False)
     df = df.reset_index().drop('index', axis=1)
 
-    return df.head(5)
+    return json.dumps(json.loads(df.head(5)['file_name'].to_json(orient='records')), indent=2)
+    # return df.head(5)['file_name'].to_json(orient="records", lines=True)
+
+
+if __name__ == "__main__":
+    d = main('resumes', '''
+    Who are we:
+
+We're incubated at IIT Kanpur and working on state-of-the-art reinforcement learning based traffic management system. We are looking for reinforcement learning experts to join our team.
+
+
+Responsibilities:
+
+Build and iterate over RL models
+Suggest improvements and fix bugs
+Work in an agile environment.
+Integrate models with hardware.
+
+
+Qualifications
+
+Experience with Machine learning libraries
+Experience with Reinforcement Learning
+Experience with Python
+Experience with Tensorflow/ PyTorch
+
+    ''')
+    print(d)
