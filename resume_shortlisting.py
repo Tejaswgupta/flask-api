@@ -207,7 +207,7 @@ def main(dir_location: str, job_description: str):
     df = df.sort_values(by='scores', ascending=False)
     df = df.reset_index().drop('index', axis=1)
 
-    return json.dumps(json.loads(df.head(5)['file_name'].to_json(orient='records')), indent=2)
+    return df.head(5)['file_name']
     # return df.head(5)['file_name'].to_json(orient="records", lines=True)
 
 
