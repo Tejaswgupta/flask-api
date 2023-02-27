@@ -28,7 +28,6 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-nltk.download('stopwords')
 nltk.download('popular')
 nlp = spacy.load('en_core_web_sm')
 # NLTK stop words
@@ -40,13 +39,18 @@ stemmer = PorterStemmer()
 
 def get_pdf_text(pdf_file):
     """Function to extract text from a pdf file"""
-    with open(pdf_file, "rb") as file:
-        reader = PyPDF2.PdfReader(file)
-        text = ""
-        for page_num in range(len(reader.pages)):
-            page = reader.pages[page_num]
-            text += page.extract_text()
-        return text
+    try:
+        with open(pdf_file, "rb") as file:
+            reader = PyPDF2.PdfReader(file)
+            text = ""
+            for page_num in range(len(reader.pages)):
+                page = reader.pages[page_num]
+                text += page.extract_text()
+            return text
+
+    except Exception as e:
+        print(e)
+        return ""
 
 
 def get_docx_text(docx_file):
