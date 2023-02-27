@@ -2,10 +2,13 @@ import os
 import shutil
 import urllib.request
 
+from flask_cors import CORS
+
 from flask import Flask, jsonify, request
 from resume_shortlisting import main
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/process-resumes', methods=['POST'])
