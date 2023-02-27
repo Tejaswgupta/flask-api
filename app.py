@@ -36,7 +36,6 @@ def process_resumes_api():
         # Process the resumes
     shortlisted_resumes_df = main(folder_name, job_description)
     shortlisted_resumes_list = shortlisted_resumes_df.tolist()
-    print(shortlisted_resumes_df.tolist())
 
     # Delete the resumes folder and its contents
     shutil.rmtree(folder_name)
