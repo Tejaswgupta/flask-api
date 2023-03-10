@@ -36,15 +36,17 @@ def process_resumes_api():
                 with open(resume_path, 'wb') as f2:
                     f2.write(f.read())
 
-        # Process the resumes
+    # Process the resumes
     shortlisted_resumes_df = main(folder_name, job_description)
-    shortlisted_resumes_list = shortlisted_resumes_df.tolist()
+    listOfReading = [dict(name=row['file_name'], github_url=row['github_url'])
+                     for index, row in shortlisted_resumes_df.iterrows()]
+    # shortlisted_resumes_list = shortlisted_resumes_df.tolist()
 
     # Delete the resumes folder and its contents
     shutil.rmtree(folder_name)
 
     # Return the shortlisted resumes
-    return jsonify({'shortlisted_resumes': shortlisted_resumes_list})
+    return jsonify({'shortlisted_resumes': listOfReading})
 
 
 if __name__ == '__main__':

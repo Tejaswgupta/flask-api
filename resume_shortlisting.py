@@ -181,6 +181,13 @@ def calculate_scores(resumes, job_description):
     return scores
 
 
+def get_github_url(links: list):
+    for link in links:
+        s = re.match('https://github\.com/[A-Za-z]+', link)
+        if (s):
+            return s.group(0)
+
+
 def main(dir_location: str, job_description: str):
     # Call the gather_pdfs function and pass the directory path as an argument
     df = gather(dir_location)
@@ -188,6 +195,9 @@ def main(dir_location: str, job_description: str):
     # Extract links, emails and phone numbers from resume before cleaning
     df['urls'] = df['text'].apply(
         lambda x: extract_links_emails_phone_numbers(x)[0])
+
+    df['github_url'] = df['urls'].apply(lambda x: get_github_url(x))
+
     df['emails'] = df['text'].apply(
         lambda x: extract_links_emails_phone_numbers(x)[1])
     df['phone_numbers'] = df['text'].apply(
@@ -211,7 +221,7 @@ def main(dir_location: str, job_description: str):
     df = df.sort_values(by='scores', ascending=False)
     df = df.reset_index().drop('index', axis=1)
 
-    return df.head(5)['file_name']
+    return df.head(10)
     # return df.head(5)['file_name'].to_json(orient="records", lines=True)
 
 
